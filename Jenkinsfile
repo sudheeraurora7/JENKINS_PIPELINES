@@ -3,31 +3,20 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                echo "Code already checked out by Jenkins"
-            }
-        }
-
         stage('Build') {
             steps {
-                echo "Building project..."
+                echo "Checking files..."
                 sh 'ls -l'
             }
         }
 
-        stage('Deploy to EC2') {
+        stage('Deploy HTML') {
             steps {
-                echo "Deploying to EC2..."
+                echo "Deploying HTML to server..."
 
                 sh '''
-                ssh -o StrictHostKeyChecking=no ubuntu@<YOUR-EC2-IP> "
-                    mkdir -p /var/www/html &&
-                    rm -rf /var/www/html/*"
-                '''
-
-                sh '''
-                scp -o StrictHostKeyChecking=no index.html ubuntu@<YOUR-EC2-IP>:/var/www/html/
+                sudo mkdir -p /var/www/html
+                sudo cp index.html /var/www/html/
                 '''
             }
         }
