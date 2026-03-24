@@ -3,20 +3,25 @@ pipeline {
 
     stages {
 
-        stage('Build') {
+        stage('Generate HTML') {
             steps {
-                echo "Checking files..."
-                sh 'ls -l'
+                script {
+                    def date = new Date().toString()
+
+                    sh """
+                    sed -e 's/__BUILD__/${BUILD_NUMBER}/g' \
+                        -e 's/__DATE__/${date}/g' \
+                        index.html > output.html
+                    """
+                }
             }
         }
 
-        stage('Deploy HTML') {
+        stage('Deploy') {
             steps {
-                echo "Deploying HTML to server..."
-		echo "nani here for testing webhook"
                 sh '''
                 sudo mkdir -p /var/www/html
-                sudo cp index.html /var/www/html/
+                sudo cp output.html /var/www/html/index.html
                 '''
             }
         }
