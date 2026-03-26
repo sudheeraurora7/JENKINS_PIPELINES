@@ -1,28 +1,23 @@
+// File: Jenkinsfile
 pipeline {
     agent any
 
     stages {
-
-        stage('Generate HTML') {
+        stage('Checkout Code') {
             steps {
-                script {
-                    def date = new Date().toString()
-
-                    sh """
-                    sed -e 's/__BUILD__/${BUILD_NUMBER}/g' \
-                        -e 's/__DATE__/${date}/g' \
-                        index.html > output.html
-                    """
-                }
+                git 'https://github.com/YOUR_USERNAME/YOUR_REPO.git'
             }
         }
 
-        stage('Deploy') {
+        stage('Build') {
             steps {
-                sh '''
-                sudo mkdir -p /var/www/html
-                sudo cp output.html /var/www/html/index.html
-                '''
+                sh 'javac /Main.java'
+            }
+        }
+
+        stage('Run') {
+            steps {
+                sh 'java -cp src Main'
             }
         }
     }
