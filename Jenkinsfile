@@ -4,12 +4,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/sudheeraurora7/JENKINS_PIPELINES.git'
-            }
-        }
-
         stage('Create HTML') {
             steps {
                 sh '''
